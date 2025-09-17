@@ -69,9 +69,12 @@ let listaPessoasJaForam = [];
 let listaDiferencaEntreLista = [];
 let indice = 0;
 
+carregarLista();
+
 inicio();
 
 function inicio() {
+  salvar();
   adicionarPessoasAListaDiferenca();
   console.clear();
   for (let i = 0; i < listaDiferencaEntreLista.length; i++) {
@@ -79,14 +82,20 @@ function inicio() {
   }
 
   document.body.innerHTML =
-    '<h1>Escolha uma opção abaixo:</h1><button id="listaLimpeza">Lista Limpeza</button><button id="quemFoi">Quem foi</button><button>Quem faltou</button><button>Pular pessoa</button><button>Excluir pessoa</button>';
+    '<h1>Escolha uma opção abaixo:</h1><button id="listaLimpeza">Lista Limpeza</button><button id="quemFoi">Quem foi</button><button id="quemFalta">Quem faltou</button><button id="pularPessoa">Pular pessoa</button><button id="excluirPessoa">Excluir pessoa</button>';
 
   //fucoes
   document
     .getElementById("listaLimpeza")
     .addEventListener("click", listaLimpeza);
-  
+
   document.getElementById("quemFoi").addEventListener('click', quemFoi)
+
+  document.getElementById("quemFalta").addEventListener('click', quemAindaFalta)
+
+  document.getElementById("pularPessoa").addEventListener('click', pularPessoa)
+
+  document.getElementById("excluirPessoa").addEventListener('click', excluirPessoa)
 }
 
 function listaLimpeza() {
@@ -121,7 +130,7 @@ function _4PessoasFuncao() {
   document.getElementById("voltarInicio").addEventListener("click", inicio);
 
   document.getElementById("_4tudoCerto").addEventListener("click", function () {
-    adicionarNaLista3Pessoa(0, 1, 2, 3);//criar adicionar lista 4 pessoas
+    adicionarNaLista4Pessoa(0, 1, 2, 3);//criar adicionar lista 4 pessoas
   });
 
   document.getElementById("_4AlguemFaltou").addEventListener('click', _4AlguemFaltou)
@@ -129,7 +138,7 @@ function _4PessoasFuncao() {
 }
 
 
-function _4AlguemFaltou(){
+function _4AlguemFaltou() {
   document.body.innerHTML = `
     <h1>Quem faltou? </h1>
     <p>1. ${listaDiferencaEntreLista[0]}</p>
@@ -150,13 +159,13 @@ function _4AlguemFaltou(){
   document.getElementById("_4Pessoa4Pessoas").addEventListener("click", _4Pessoa4Pessoas);
 }
 
-function _1Pessoa4Pessoas(){
+function _1Pessoa4Pessoas() {
   document.body.innerHTML = `
         <h1>Confirme se esta tudo certo?</h1>
         <p>1. ${listaDiferencaEntreLista[1]}</p>
         <p>2. ${listaDiferencaEntreLista[2]}</p>
         <p>3. ${listaDiferencaEntreLista[3]}</p>
-        <p>3. ${listaDiferencaEntreLista[4]}</p>
+        <p>4. ${listaDiferencaEntreLista[4]}</p>
         <button id="tudoCerto">Sim, tudo certo</button>
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
@@ -169,7 +178,7 @@ function _1Pessoa4Pessoas(){
     .addEventListener("click", adicioeneIndice4Pessoas);
 }
 
-function _2Pessoa4Pessoas(){
+function _2Pessoa4Pessoas() {
   document.body.innerHTML = `
         <h1>Confirme se esta tudo certo?</h1>
         <p>1. ${listaDiferencaEntreLista[0]}</p>
@@ -180,7 +189,7 @@ function _2Pessoa4Pessoas(){
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
   document.getElementById("tudoCerto").addEventListener("click", function () {
-    adicionarNaLista4Pessoa(0,4,2,3);
+    adicionarNaLista4Pessoa(0, 4, 2, 3);
   });
 
   document
@@ -189,7 +198,7 @@ function _2Pessoa4Pessoas(){
 }
 
 
-function _3Pessoa4Pessoas(){
+function _3Pessoa4Pessoas() {
   document.body.innerHTML = `
         <h1>Confirme se esta tudo certo?</h1>
         <p>1. ${listaDiferencaEntreLista[0]}</p>
@@ -200,7 +209,7 @@ function _3Pessoa4Pessoas(){
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
   document.getElementById("tudoCerto").addEventListener("click", function () {
-    adicionarNaLista4Pessoa(0,1,4,3);
+    adicionarNaLista4Pessoa(0, 1, 4, 3);
   });
 
   document
@@ -208,7 +217,7 @@ function _3Pessoa4Pessoas(){
     .addEventListener("click", adicioeneIndice4Pessoas);
 }
 
-function _4Pessoa4Pessoas(){
+function _4Pessoa4Pessoas() {
   document.body.innerHTML = `
         <h1>Confirme se esta tudo certo?</h1>
         <p>1. ${listaDiferencaEntreLista[0]}</p>
@@ -219,7 +228,7 @@ function _4Pessoa4Pessoas(){
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
   document.getElementById("tudoCerto").addEventListener("click", function () {
-    adicionarNaLista4Pessoa(0,1,2,4);
+    adicionarNaLista4Pessoa(0, 1, 2, 4);
   });
 
   document
@@ -309,7 +318,7 @@ function _3PessoasFucao() {
     .getElementById("_3AlguemFaltou")
     .addEventListener("click", _3AlguemFaltou);
 
-  document.getElementById("adicionarIndice").addEventListener('click',adicioeneIndice)
+  document.getElementById("adicionarIndice").addEventListener('click', adicioeneIndice)
 }
 
 function _3AlguemFaltou() {
@@ -467,18 +476,152 @@ function adicionarPessoasAListaDiferenca() {
       listaDiferencaEntreLista.push(nome);
     }
   }
+
 }
 
-function quemFoi(){
-  let paragrafo = document.createElement("p")
+function quemFoi() {
   let botaoVoltar = document.createElement("button")
   botaoVoltar.textContent = "Voltar ao inicio"
-  botaoVoltar.id = "voltarInicio"
-  for(let nome of listaPessoasJaForam){
-    paragrafo.textContent = nome
-    document.body.appendChild(paragrafo);
+  botaoVoltar.onclick = () => {
+    inicio()
   }
 
-  document.body.appendChild(paragrafo);
+  document.body.innerHTML = `<h1>Lista de pessoas que ja limparam!</h1>`
+
+  listaPessoasJaForam.forEach(nome => {
+    let paragrafo = document.createElement("p")
+    paragrafo.textContent = nome;
+    document.body.appendChild(paragrafo);
+  })
+
   document.body.appendChild(botaoVoltar)
+}
+
+function quemAindaFalta() {
+  let botaoVoltar = document.createElement("button")
+  botaoVoltar.textContent = "Voltar ao inicio"
+  botaoVoltar.onclick = () => {
+    inicio()
+  }
+
+  document.body.innerHTML = `<h1>Lista de pessoas que ainda faltam limpar</h1>`
+
+  listaDiferencaEntreLista.forEach(nome => {
+    let paragrafo = document.createElement("p")
+    paragrafo.textContent = nome;
+    document.body.appendChild(paragrafo);
+  })
+
+  document.body.appendChild(botaoVoltar)
+}
+
+
+
+
+
+function pularPessoa() {
+  let listaParaConfirmar = [];
+  let contator = 0;
+  let primeiro10 = listaDiferencaEntreLista.slice(0, 10);
+  document.body.innerHTML = `<h1>Escolha uma pessoas(clique no nome)</h1>`;
+  document.body.appendChild(document.createElement("br"));
+  primeiro10.forEach((nome, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = nome;
+    btn.addEventListener("click", () => {
+      if (listaParaConfirmar >= 1) return;
+      listaParaConfirmar.push(nome);
+      btn.disabled = true;
+      contator++;
+
+      console.log(contator);
+      console.log(listaParaConfirmar);
+      if (contator === 1) {
+        mostrarPularPessoa(listaParaConfirmar);
+      }
+    });
+    document.body.appendChild(btn);
+    document.body.appendChild(document.createElement("br"));
+  });
+}
+
+function mostrarPularPessoa(lista) {
+  document.body.innerHTML = `
+        <h1>Confirme se esta tudo certo?</h1>
+        <p>1. ${lista[0]}</p>
+        <button id="tudoCerto">Sim, tudo certo</button>
+        <button id="tenteNovamente">Tente novamente</button>
+        `;
+  document.getElementById("tudoCerto").addEventListener("click", function () {
+    listaPessoasJaForam.push(lista[0]);
+
+    document.body.innerHTML = `<h1>Adiciona com sucesso!</h1>`;
+
+    setTimeout(inicio, 1000);
+  });
+
+  document
+    .getElementById("tenteNovamente")
+    .addEventListener("click", pularPessoa);
+}
+
+
+
+
+
+
+// funcao excluir pessoa
+function excluirPessoa() {
+  let listaParaConfirmar = [];
+  let contator = 0;
+  let ultimos10 = listaPessoasJaForam.slice(-10);
+  document.body.innerHTML = `<h1>Escolha uma pessoas para excluir(clique no nome)</h1><p>(Pego os ultimos 10)</p>`;
+  document.body.appendChild(document.createElement("br"));
+  ultimos10.forEach((nome) => {
+    const btn = document.createElement("button");
+    btn.textContent = nome;
+    btn.addEventListener("click", () => {
+      if (listaParaConfirmar >= 1) return;
+      listaParaConfirmar.push(nome);
+      btn.disabled = true;
+      contator++;
+
+      console.log(contator);
+      console.log(listaParaConfirmar);
+      if (contator === 1) {
+        mostrarExcluirPessoa(listaParaConfirmar);
+      }
+    });
+    document.body.appendChild(btn);
+    document.body.appendChild(document.createElement("br"));
+  });
+}
+
+function mostrarExcluirPessoa(lista) {
+  document.body.innerHTML = `
+        <h1>Você quer excluir esta pessoa da lista de pessoas que ja limparam?</h1>
+        <p>1. ${lista[0]}</p>
+        <button id="tudoCerto">Sim, tudo certo</button>
+        <button id="tenteNovamente">Tente novamente</button>
+        `;
+  document.getElementById("tudoCerto").addEventListener("click", function () {
+    let index = listaPessoasJaForam.indexOf(lista[0])
+    listaPessoasJaForam.splice(index, 1)
+
+
+    document.body.innerHTML = `<h1>Removido com sucesso!</h1>`;
+
+    setTimeout(inicio, 1000);
+  });
+
+  document
+    .getElementById("tenteNovamente")
+    .addEventListener("click", excluirPessoa);
+}
+
+function salvar(){
+  localStorage.setItem("minhaLista", JSON.stringify(listaPessoasJaForam))
+}
+function carregarLista(){
+  listaPessoasJaForam = JSON.parse(localStorage.getItem("minhaLista")) || [];
 }
