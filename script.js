@@ -67,22 +67,41 @@ let todasAsPessoas = [
 
 let listaPessoasJaForam = [];
 let listaDiferencaEntreLista = [];
+let listaAuxiliar = []
 let indice = 0;
+
+let entrarEAdicionarOsUltimos = false;
 
 carregarLista();
 
 inicio();
 
+
 function inicio() {
   salvar();
-  adicionarPessoasAListaDiferenca();
-  console.clear();
+  testarSeTemAlguemListaAuxiliar()
+    if(entrarEAdicionarOsUltimos){
+        adicionarFaltantes()
+    }else{
+        adicionarPessoasAListaDiferenca();
+    }
+
+  
+    console.log("\n")
   for (let i = 0; i < listaDiferencaEntreLista.length; i++) {
     console.log(listaDiferencaEntreLista[i]);
   }
+  console.log("\n")
 
-  document.body.innerHTML =
-    '<h1>Escolha uma opção abaixo:</h1><button id="listaLimpeza">Lista Limpeza</button><button id="quemFoi">Quem foi</button><button id="quemFalta">Quem faltou</button><button id="pularPessoa">Pular pessoa</button><button id="excluirPessoa">Excluir pessoa</button>';
+  document.body.innerHTML =`
+  <h1>Escolha uma opção abaixo:</h1>
+  <button id="listaLimpeza">Lista Limpeza</button>
+  <button id="quemFoi">Quem foi</button>
+  <button id="quemFalta">Quem faltou</button>
+  <button id="pularPessoa">Pular pessoa</button>
+  <button id="excluirPessoa">Excluir pessoa</button>
+  <button id="limparLista">Reiniciar a lista</button>`
+    
 
   //fucoes
   document
@@ -96,7 +115,46 @@ function inicio() {
   document.getElementById("pularPessoa").addEventListener('click', pularPessoa)
 
   document.getElementById("excluirPessoa").addEventListener('click', excluirPessoa)
+
+  document.getElementById("limparLista").addEventListener('click', limparLista)
 }
+
+
+
+function adicionarFaltantes(){
+    listaAuxiliar = JSON.parse(localStorage.getItem("listaAuxiliar")) || [];
+    let listaGuardarQuemFalta = []
+    //logica absurda!!!
+    adicionarPessoasAListaDiferenca()
+    listaDiferencaEntreLista.forEach((value) =>{
+        if(listaAuxiliar.includes(value)){
+            listaGuardarQuemFalta.push(value)
+        }
+    });
+    listaDiferencaEntreLista = []
+    listaGuardarQuemFalta.forEach((value) => {
+        listaDiferencaEntreLista.push(value)
+    })  
+    todasAsPessoas.forEach((nome) =>{
+        if(!listaPessoasJaForam.includes(nome) && !listaDiferencaEntreLista.includes(nome)){
+            listaDiferencaEntreLista.push(nome)
+        }
+    })
+    entrarEAdicionarOsUltimos = false
+}
+
+
+function testarSeTemAlguemListaAuxiliar(){
+    listaAuxiliar = listaAuxiliar.filter(nome => !listaPessoasJaForam.includes(nome))
+    if(listaAuxiliar.length > 0){
+        entrarEAdicionarOsUltimos = true
+    }
+    else{
+        entrarEAdicionarOsUltimos = false
+    }
+}
+
+
 
 function listaLimpeza() {
   document.body.innerHTML =
@@ -113,6 +171,9 @@ function listaLimpeza() {
 }
 
 
+
+
+
 //funcoes 4 pessoas
 function _4PessoasFuncao() {
   document.body.innerHTML = `
@@ -120,7 +181,7 @@ function _4PessoasFuncao() {
     <p>1. ${listaDiferencaEntreLista[0]}</p>
     <p>2. ${listaDiferencaEntreLista[1]}</p>
     <p>3. ${listaDiferencaEntreLista[2]}</p>
-    <p>3. ${listaDiferencaEntreLista[3]}</p>
+    <p>4. ${listaDiferencaEntreLista[3]}</p>
     <button id="_4tudoCerto">Sim, tudo certo</button>
     <button id="_4AlguemFaltou">Não, alguem faltou</button>
     <button id="adicionarIndice4Pessoas">Adicione pelo indice</button>
@@ -144,7 +205,7 @@ function _4AlguemFaltou() {
     <p>1. ${listaDiferencaEntreLista[0]}</p>
     <p>2. ${listaDiferencaEntreLista[1]}</p>
     <p>3. ${listaDiferencaEntreLista[2]}</p>
-    <p>3. ${listaDiferencaEntreLista[3]}</p>
+    <p>4. ${listaDiferencaEntreLista[3]}</p>
     <button id="_1Pessoa4Pessoas">1. Pessoa</button>
     <button id="_2Pessoa4Pessoas">2. Pessoa</button>
     <button id="_3Pessoa4Pessoas">3. Pessoa</button>
@@ -184,7 +245,7 @@ function _2Pessoa4Pessoas() {
         <p>1. ${listaDiferencaEntreLista[0]}</p>
         <p>2. ${listaDiferencaEntreLista[4]}</p>
         <p>3. ${listaDiferencaEntreLista[2]}</p>
-        <p>3. ${listaDiferencaEntreLista[3]}</p>
+        <p>4. ${listaDiferencaEntreLista[3]}</p>
         <button id="tudoCerto">Sim, tudo certo</button>
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
@@ -204,7 +265,7 @@ function _3Pessoa4Pessoas() {
         <p>1. ${listaDiferencaEntreLista[0]}</p>
         <p>2. ${listaDiferencaEntreLista[1]}</p>
         <p>3. ${listaDiferencaEntreLista[4]}</p>
-        <p>3. ${listaDiferencaEntreLista[3]}</p>
+        <p>4. ${listaDiferencaEntreLista[3]}</p>
         <button id="tudoCerto">Sim, tudo certo</button>
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
@@ -223,7 +284,7 @@ function _4Pessoa4Pessoas() {
         <p>1. ${listaDiferencaEntreLista[0]}</p>
         <p>2. ${listaDiferencaEntreLista[1]}</p>
         <p>3. ${listaDiferencaEntreLista[2]}</p>
-        <p>3. ${listaDiferencaEntreLista[4]}</p>
+        <p>4. ${listaDiferencaEntreLista[4]}</p>
         <button id="tudoCerto">Sim, tudo certo</button>
         <button id="alguemFaltou">Não, alguem faltou</button>
         `;
@@ -246,7 +307,6 @@ function adicioeneIndice4Pessoas() {
     const btn = document.createElement("button");
     btn.textContent = nome;
     btn.addEventListener("click", () => {
-      if (listaParaConfirmar >= 4) return;
       listaParaConfirmar.push(nome);
       btn.disabled = true;
       contator++;
@@ -268,7 +328,7 @@ function mostrarAdicionarIndice4Pessoas(lista) {
         <p>1. ${lista[0]}</p>
         <p>2. ${lista[1]}</p>
         <p>3. ${lista[2]}</p>
-        <p>3. ${lista[3]}</p>
+        <p>4. ${lista[3]}</p>
         <button id="tudoCerto">Sim, tudo certo</button>
         <button id="tenteNovamente">Tente novamente</button>
         `;
@@ -409,7 +469,6 @@ function adicioeneIndice() {
     const btn = document.createElement("button");
     btn.textContent = nome;
     btn.addEventListener("click", () => {
-      if (listaParaConfirmar >= 3) return;
       listaParaConfirmar.push(nome);
       btn.disabled = true;
       contator++;
@@ -475,6 +534,20 @@ function adicionarPessoasAListaDiferenca() {
     if (!listaPessoasJaForam.includes(nome)) {
       listaDiferencaEntreLista.push(nome);
     }
+  }
+  if(listaDiferencaEntreLista.length < 5){
+    listaPessoasJaForam = []
+    listaAuxiliar = listaDiferencaEntreLista.slice()
+    for (let nome of todasAsPessoas) {
+        if (!listaPessoasJaForam.includes(nome) && !listaDiferencaEntreLista.includes(nome)) {
+          listaDiferencaEntreLista.push(nome);
+        }
+      }
+      // colocar um true na variavel
+      entrarEAdicionarOsUltimos = true;
+
+      //salvar no localStorage
+      localStorage.setItem("listaAuxiliar", JSON.stringify(listaAuxiliar))
   }
 
 }
@@ -624,4 +697,10 @@ function salvar(){
 }
 function carregarLista(){
   listaPessoasJaForam = JSON.parse(localStorage.getItem("minhaLista")) || [];
+}
+function limparLista(){
+    listaPessoasJaForam = []
+    document.body.innerHTML = `<h1>Limpo com sucesso com sucesso!</h1>`;
+
+    setTimeout(inicio, 1000);
 }
