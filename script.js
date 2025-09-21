@@ -100,7 +100,7 @@ function inicio() {
   <button id="quemFalta">Quem faltou</button>
   <button id="pularPessoa">Pular pessoa</button>
   <button id="excluirPessoa">Excluir pessoa</button>
-  <button id="limparLista">Reiniciar a lista</button>`
+  <button id="limparLocal">Limpar LocalStorage</button>`
     
 
   //fucoes
@@ -116,7 +116,15 @@ function inicio() {
 
   document.getElementById("excluirPessoa").addEventListener('click', excluirPessoa)
 
-  document.getElementById("limparLista").addEventListener('click', limparLista)
+  document.getElementById("limparLocal").addEventListener('click', limparLocal)
+
+  //teste, adiciona 10 por vez 
+  /* document.getElementById("teste").addEventListener('click', function(){
+    for(i = 0;i<10;i++){
+      listaPessoasJaForam.push(listaDiferencaEntreLista[i])
+    }
+    inicio()
+  }) */
 }
 
 
@@ -145,6 +153,7 @@ function adicionarFaltantes(){
 
 
 function testarSeTemAlguemListaAuxiliar(){
+    listaAuxiliar = JSON.parse(localStorage.getItem("listaAuxiliar")) || [];
     listaAuxiliar = listaAuxiliar.filter(nome => !listaPessoasJaForam.includes(nome))
     if(listaAuxiliar.length > 0){
         entrarEAdicionarOsUltimos = true
@@ -152,13 +161,20 @@ function testarSeTemAlguemListaAuxiliar(){
     else{
         entrarEAdicionarOsUltimos = false
     }
+    localStorage.setItem("listaAuxiliar", JSON.stringify(listaAuxiliar))
+
 }
 
 
 
 function listaLimpeza() {
-  document.body.innerHTML =
-    '<h1>Escolha uma opção abaixo: </h1><button id="_3Pessoas">3 Pessoas</button><button id="_4Pessoas">4 Pessoas</button><button id="voltarInicio">Voltar ao inicio</button>';
+  document.body.innerHTML = `
+  <h1>Escolha uma opção abaixo: </h1>
+  <button id="_3Pessoas">3 Pessoas</button>
+  <button id="_4Pessoas">4 Pessoas</button>
+  <button id="voltarInicio">Voltar ao inicio</button>
+  `
+
 
   document
     .getElementById("_3Pessoas")
@@ -185,17 +201,18 @@ function _4PessoasFuncao() {
     <button id="_4tudoCerto">Sim, tudo certo</button>
     <button id="_4AlguemFaltou">Não, alguem faltou</button>
     <button id="adicionarIndice4Pessoas">Adicione pelo indice</button>
-
     <button id="voltarInicio">Voltar ao inicio</button>
-    `;
-  document.getElementById("voltarInicio").addEventListener("click", inicio);
+    `
 
   document.getElementById("_4tudoCerto").addEventListener("click", function () {
-    adicionarNaLista4Pessoa(0, 1, 2, 3);//criar adicionar lista 4 pessoas
+    adicionarNaLista4Pessoa(0, 1, 2, 3);
   });
 
   document.getElementById("_4AlguemFaltou").addEventListener('click', _4AlguemFaltou)
+
   document.getElementById("adicionarIndice4Pessoas").addEventListener('click', adicioeneIndice4Pessoas)
+
+  document.getElementById("voltarInicio").addEventListener("click", inicio);
 }
 
 
@@ -213,11 +230,12 @@ function _4AlguemFaltou() {
 
     <button id="voltarInicio">Voltar ao inicio</button>
     `;
-  document.getElementById("voltarInicio").addEventListener("click", inicio);
+
   document.getElementById("_1Pessoa4Pessoas").addEventListener("click", _1Pessoa4Pessoas);
   document.getElementById("_2Pessoa4Pessoas").addEventListener("click", _2Pessoa4Pessoas);
   document.getElementById("_3Pessoa4Pessoas").addEventListener("click", _3Pessoa4Pessoas);
   document.getElementById("_4Pessoa4Pessoas").addEventListener("click", _4Pessoa4Pessoas);
+  document.getElementById("voltarInicio").addEventListener("click", inicio);
 }
 
 function _1Pessoa4Pessoas() {
@@ -303,7 +321,7 @@ function adicioeneIndice4Pessoas() {
   let primeiro10 = listaDiferencaEntreLista.slice(0, 10);
   document.body.innerHTML = `<h1>Escolha até 4 pessoas(clique nos nomes)</h1>`;
   document.body.appendChild(document.createElement("br"));
-  primeiro10.forEach((nome, i) => {
+  primeiro10.forEach((nome) => {
     const btn = document.createElement("button");
     btn.textContent = nome;
     btn.addEventListener("click", () => {
@@ -345,7 +363,7 @@ function mostrarAdicionarIndice4Pessoas(lista) {
 
   document
     .getElementById("tenteNovamente")
-    .addEventListener("click", adicioeneIndice);
+    .addEventListener("click", adicioeneIndice4Pessoas);
 }
 
 
@@ -365,9 +383,9 @@ function _3PessoasFucao() {
     <button id="_3tudoCerto">Sim, tudo certo</button>
     <button id="_3AlguemFaltou">Não, alguem faltou</button>
     <button id="adicionarIndice">Adicione pelo indice</button>
-
     <button id="voltarInicio">Voltar ao inicio</button>
     `;
+
   document.getElementById("voltarInicio").addEventListener("click", inicio);
 
   document.getElementById("_3tudoCerto").addEventListener("click", function () {
@@ -465,7 +483,7 @@ function adicioeneIndice() {
   let primeiro10 = listaDiferencaEntreLista.slice(0, 10);
   document.body.innerHTML = `<h1>Escolha até 3 pessoas(clique nos nomes)</h1>`;
   document.body.appendChild(document.createElement("br"));
-  primeiro10.forEach((nome, i) => {
+  primeiro10.forEach((nome) => {
     const btn = document.createElement("button");
     btn.textContent = nome;
     btn.addEventListener("click", () => {
@@ -698,8 +716,8 @@ function salvar(){
 function carregarLista(){
   listaPessoasJaForam = JSON.parse(localStorage.getItem("minhaLista")) || [];
 }
-function limparLista(){
-    listaPessoasJaForam = []
+function limparLocal(){
+    localStorage.clear()
     document.body.innerHTML = `<h1>Limpo com sucesso com sucesso!</h1>`;
 
     setTimeout(inicio, 1000);
