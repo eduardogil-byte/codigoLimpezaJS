@@ -817,7 +817,30 @@ function carregarLista() {
 function limparLocal() {
   listaPessoasJaForam = [];
   localStorage.clear();
-  document.body.innerHTML = `<h1>Limpo com sucesso o LocalStorage e a lista de pessoas que ja limparam!</h1>`;
+  document.body.innerHTML = `
+  <h1>Você tem certeza que quer limpar o LocalStorage?</h1>
+  <div class="paragrafo">
+  <p>Faz com que apague o conteudo da lista de pessoas que ja limparam a sala, junto com o localStorage</p>
+  </div>
+  <div class="botoes">
+  <button id="sim">Sim</button>
+  <button id="nao">Não</button>
+  </div>
+  `;
+  document.getElementById("sim").addEventListener("click",function(){
+    listaPessoasJaForam = [];
+    localStorage.clear();
 
-  setTimeout(inicio, 1000);
+    document.body.innerHTML = `
+    <h1>Limpo com sucesso o LocalStorage e a lista de pessoas que ja limparam!</h1>`
+
+    setTimeout(inicio, 1000);
+  })
+  document.getElementById("nao").addEventListener("click",function(){
+    document.body.innerHTML = `
+    <h1>Voltando ao inicio!</h1>`
+
+    setTimeout(inicio, 1000);
+  })
+  
 }
