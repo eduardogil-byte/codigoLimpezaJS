@@ -815,8 +815,6 @@ function carregarLista() {
   listaPessoasJaForam = JSON.parse(localStorage.getItem("minhaLista")) || [];
 }
 function limparLocal() {
-  listaPessoasJaForam = [];
-  localStorage.clear();
   document.body.innerHTML = `
   <h1>Você tem certeza que quer limpar o LocalStorage?</h1>
   <div class="paragrafo">
